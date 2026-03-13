@@ -1,0 +1,247 @@
+/* ─── Reset & Base ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-page:       #080808;
+  --bg-calc:       #0d0d0d;
+  --bg-display:    #0a0a0a;
+  --bg-btn:        #141414;
+  --bg-btn-fn:     #1a1a1a;
+  --bg-btn-op:     #1c1f10;
+  --bg-btn-eq:     #c8f000;
+
+  --accent:        #c8f000;
+  --accent-dim:    #8aaa00;
+
+  --text-primary:  #f0ece2;
+  --text-secondary:#6a9e7a;
+  --text-muted:    #3a3a3a;
+  --text-eq:       #0d0d0d;
+  --text-op:       #c8f000;
+
+  --border:        #1e1e1e;
+  --border-accent: #c8f000;
+
+  --font: 'JetBrains Mono', monospace;
+  --radius: 2px;
+  --transition: 0.12s ease;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-page);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(200,240,0,0.015) 39px,
+      rgba(200,240,0,0.015) 40px
+    );
+  font-family: var(--font);
+}
+
+/* ─── Wrapper ─── */
+.wrapper {
+  padding: 1rem;
+}
+
+/* ─── Calc Shell ─── */
+.calc {
+  background: var(--bg-calc);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  width: 320px;
+  padding: 1.5rem;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Header ─── */
+.calc__header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.calc__label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.calc__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.03em;
+}
+
+/* ─── Display ─── */
+.calc__display {
+  background: var(--bg-display);
+  border: 1px solid var(--border);
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.2rem;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.calc__expression {
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  min-height: 16px;
+  word-break: break-all;
+  text-align: right;
+}
+
+.calc__result {
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  word-break: break-all;
+  text-align: right;
+  transition: color var(--transition);
+}
+
+.calc__result.--accent {
+  color: var(--accent);
+}
+
+/* ─── Button Grid ─── */
+.calc__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+/* ─── Buttons ─── */
+.btn {
+  background: var(--bg-btn);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 400;
+  padding: 0;
+  height: 58px;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    transform 0.08s ease,
+    color var(--transition);
+  letter-spacing: 0.04em;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn:active::after {
+  opacity: 0.08;
+}
+
+.btn:hover {
+  border-color: #2e2e2e;
+  background: #1c1c1c;
+}
+
+/* Function buttons (AC, +/-, %) */
+.btn--fn {
+  background: var(--bg-btn-fn);
+  color: var(--text-secondary);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.btn--fn:hover {
+  background: #222;
+  color: var(--accent);
+  border-color: #333;
+}
+
+/* Operator buttons */
+.btn--op {
+  background: var(--bg-btn-op);
+  color: var(--text-op);
+  font-size: 18px;
+  border-color: #232500;
+}
+
+.btn--op:hover {
+  background: #23270f;
+  border-color: #3a3e00;
+}
+
+.btn--op.--active {
+  background: var(--accent);
+  color: var(--text-eq);
+  border-color: var(--accent);
+}
+
+/* Zero button (spans 2 cols) */
+.btn--zero {
+  grid-column: span 2;
+  text-align: left;
+  padding-left: 20px;
+}
+
+/* Equals button */
+.btn--eq {
+  background: var(--accent);
+  color: var(--text-eq);
+  font-size: 18px;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+.btn--eq:hover {
+  background: #d4ff00;
+  border-color: #d4ff00;
+}
+
+.btn--eq:active::after {
+  opacity: 0.12;
+}
+
+/* Keyboard press feedback */
+.btn.key-active {
+  transform: scale(0.95);
+  border-color: var(--accent);
+}
